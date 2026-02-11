@@ -19,6 +19,8 @@ classifiers = [
 dependencies = [
     "torch",
     "vocos",
+    "librosa",
+    "soundfile",
 ]
 
 [project.urls]
