@@ -27,8 +27,8 @@ https://github.com/user-attachments/assets/988c3726-eb6f-4877-93b9-cd5f0f488f8e
 
 ### Why is this useful?
 * Enhancing TTS: LavaSR can enhance TTS(text-to-speech) model quality considerably with nearly 0 computational cost.
-* Real-time enhancement: NovaSR allows for on device enhancement of any low quality calls, audio, etc. while using little memory.
-* Restoring datasets: NovaSR can enhance audio quality of any audio dataset.
+* Real-time enhancement: LavaSR allows for on device enhancement of any low quality calls, audio, etc. while using little memory.
+* Restoring datasets: LavaSR can enhance audio quality of any audio dataset.
 
 
 ### Comparisons
