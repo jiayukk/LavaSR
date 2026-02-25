@@ -51,3 +51,14 @@ class LavaEnhance:
         self.bwe_model.lr_refiner = FastLRMerge(device=self.device, cutoff=cutoff, transition_bins=1024)
       
         return x, input_sr
+
+class LavaEnhance2(LavaEnhance):
+    def __init__(self, model_path="YatharthS/LavaSR", device='cpu'):
+
+        if model_path == "YatharthS/LavaSR":
+            from huggingface_hub import snapshot_download
+            model_path = snapshot_download(model_path)
+
+        self.device = device
+        self.bwe_model = LavaBWE(f"{model_path}/enhancer_v2", device=device) 
+        self.denoiser_model = LavaDenoiser(f'{model_path}/denoiser/denoiser.bin', device=device)
