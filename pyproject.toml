@@ -18,9 +18,9 @@ classifiers = [
 ]
 dependencies = [
     "torch",
-    "vocos",
     "librosa",
     "soundfile",
+    "vocos @ git+https://github.com/langtech-bsc/vocos.git@matcha"
 ]
 
 [project.urls]
