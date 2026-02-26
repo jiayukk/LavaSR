@@ -14,13 +14,14 @@
 </p>
 
 
-LavaSR is a lightweight and high quality speech enhancement model that enhances low quality audio with noise into clean crisp audio with speeds reaching roughly 4000x realtime on GPU and 50x realtime on CPU.
+LavaSR is a lightweight and high quality speech enhancement model that enhances low quality audio with noise into clean crisp audio with speeds reaching roughly 5000x realtime on GPU and over 60x realtime on CPU.
 
-https://github.com/user-attachments/assets/988c3726-eb6f-4877-93b9-cd5f0f488f8e
+**LavaSR v2 just released**: Massive increase in quality and speed, surpassing 6gb slow diffusion models. Check it out!
 
+https://github.com/user-attachments/assets/1d11ae30-cb19-4c9b-ac46-52adbcac957f
 
 ## Main features
-- Extremely fast: Reaches speeds over 4000x realtime on GPUs and 50x realtime on CPUs
+- Extremely fast: Reaches speeds over 5000x realtime on GPUs and 50x realtime on CPUs
 - High quality: Quality is on par with diffusion based models.
 - Efficency: Just uses 500mb vram and potentially less.
 - Universal input: Supports any input sampling rate from 8khz to 48khz.
@@ -33,15 +34,24 @@ https://github.com/user-attachments/assets/988c3726-eb6f-4877-93b9-cd5f0f488f8e
 
 ### Comparisons
 
-Comparisons were done on A100 gpu. Higher realtime means faster processing speeds.
+Quality comparisons using Log-Spectral-distance. Lower is better(more similar to original 48khz file)
+| Method              | 8→48 kHz | 16→48 kHz | 24→48 kHz |
+|--------------------|----------------|-----------------|-----------------|
+| Sinc upsampling     | 2.98           | 2.75            | 2.17            |
+| AudioSR (diffusion) | 1.13           | 0.98            | 0.82            |
+| NU-WAVE2(diffusion) | 1.10           | 0.94            | 0.87            |
+| AP-BWE(previous best) | 0.86           | 0.74            | 0.64            |
+| **Proposed model**  | **0.85**       | **0.72**        | **0.63**        |
+
+Speed Comparisons were done on H100 gpu. Higher realtime means faster processing speeds.
 
 | Model         | Speed (Real-Time) | Model Size |
 | :------------ | :---------------- | :--------- |
-| **LavaSR** | **4000x realtime** | **~50 MB** |
+| **LavaSR** | **5000x realtime** | **~50 MB** |
 | AP-BWE      | 300x realtime        | ~70 MB     |
 | FlowHigh      | 80x realtime        | ~450 MB     |
 | FlashSR       | 14x realtime        | ~1000 MB     |
-| AudioSR       | 0.6x realtime    | ~2000 MB     |
+| AudioSR       | 0.6x realtime    | ~6000 MB     |
 
 ## Usage
 You can try it locally, colab, or spaces.
@@ -56,11 +66,11 @@ uv pip install git+https://github.com/ysharma3501/LavaSR.git
 
 #### Load model:
 ```python
-from LavaSR.model import LavaEnhance 
+from LavaSR.model import LavaEnhance2 
 
 ## change device to your torch device type(cuda, mps, etc.)
 device = 'cpu'
-lava_model = LavaEnhance("YatharthS/LavaSR", device)
+lava_model = LavaEnhance2("YatharthS/LavaSR", device)
 ```
 
 #### Simple inference
@@ -103,7 +113,7 @@ sf.write('output.wav', output_audio, 16000)
 
 Q: How is this novel?
 
-A: It adapts Vocos based architecture for BWE(bandwidth extension/audio upsampling). We also propose a novel triphase loss and a linkwitz-riley inspired refiner to further significantly increase quality.
+A: It adapts Vocos based architecture for BWE(bandwidth extension/audio upsampling). We also propose linkwitz-riley inspired refiner to further significantly increase quality.
 
 Q: How is it so fast?
 
@@ -113,7 +123,7 @@ A: Because it uses the Vocos architecture which is isotropic and single pass, it
 
 - [x] Release model and code
 - [x] Huggingface spaces demo
-- [ ] Release model with no metallic issue.
+- [x] Release model with no metallic issue.
 - [ ] Release training code
 - [ ] Release model trained on music and audio
 
