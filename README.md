@@ -22,7 +22,7 @@ https://github.com/user-attachments/assets/1d11ae30-cb19-4c9b-ac46-52adbcac957f
 
 ## Main features
 - Extremely fast: Reaches speeds over 5000x realtime on GPUs and 50x realtime on CPUs
-- High quality: Quality is on par with diffusion based models.
+- High quality: Quality surpasses diffusion models.
 - Efficency: Just uses 500mb vram and potentially less.
 - Universal input: Supports any input sampling rate from 8khz to 48khz.
 
@@ -43,7 +43,7 @@ Quality comparisons using Log-Spectral-distance. Lower is better(more similar to
 | AP-BWE(previous best) | 0.86           | 0.74            | 0.64            |
 | **Proposed model**  | **0.85**       | **0.72**        | **0.63**        |
 
-Speed Comparisons were done on H100 gpu. Higher realtime means faster processing speeds.
+Speed Comparisons were done on A100 gpu. Higher realtime means faster processing speeds.
 
 | Model         | Speed (Real-Time) | Model Size |
 | :------------ | :---------------- | :--------- |
@@ -85,7 +85,7 @@ output_audio = lava_model.enhance(input_audio).cpu().numpy().squeeze()
 
 ## Save Audio(both input and output)
 sf.write('input.wav', input_audio.cpu().numpy().squeeze(), 16000)
-sf.write('output.wav', output_audio, 16000)
+sf.write('output.wav', output_audio, 48000)
 ```
 
 #### Advanced inference
@@ -106,7 +106,7 @@ output_audio = lava_model.enhance(input_audio, denoise=denoise, batch=batch).cpu
 
 ## Save Audio(both input and output)
 sf.write('input.wav', input_audio.cpu().numpy().squeeze(), 16000)
-sf.write('output.wav', output_audio, 16000)
+sf.write('output.wav', output_audio, 48000)
 ```
 
 ## Info
