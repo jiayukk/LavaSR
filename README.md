@@ -34,7 +34,7 @@ https://github.com/user-attachments/assets/1d11ae30-cb19-4c9b-ac46-52adbcac957f
 
 ### Comparisons
 
-Quality comparisons using Log-Spectral-distance. Lower is better(more similar to original 48khz file)
+Quality comparisons using Log-Spectral-distance on VCTK validation. Lower is better(more similar to original 48khz file).
 | Method              | 8→48 kHz | 16→48 kHz | 24→48 kHz |
 |--------------------|----------------|-----------------|-----------------|
 | Sinc upsampling     | 2.98           | 2.75            | 2.17            |
@@ -119,6 +119,9 @@ Q: How is it so fast?
 
 A: Because it uses the Vocos architecture which is isotropic and single pass, it's much faster then time-domain based and diffusion based models.
 
+Q: What is it trained on?
+
+A: It starts off from a Vocos prior and trained with just 50k steps on VCTK dataset. Dataset is randomly resampled to 8khz/16khz/24khz and randomly noise is added.
 ## Roadmap
 
 - [x] Release model and code
