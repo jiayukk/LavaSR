@@ -76,8 +76,23 @@ class CausalResBlock1(nn.Module):
 
         x = self.gamma.view(1, -1, 1) * x
         return residual + x
-      
-class VocosBackbone(nn.Module):
+
+class Backbone(nn.Module):
+    """Base class for the generator's backbone. It preserves the same temporal resolution across all layers."""
+
+    def forward(self, x: torch.Tensor, **kwargs) -> torch.Tensor:
+        """
+        Args:
+            x (Tensor): Input tensor of shape (B, C, L), where B is the batch size,
+                        C denotes output features, and L is the sequence length.
+
+        Returns:
+            Tensor: Output of shape (B, L, H), where B is the batch size, L is the sequence length,
+                    and H denotes the model dimension.
+        """
+        raise NotImplementedError("Subclasses must implement the forward method.")
+
+class VocosBackbone(Backbone):
 
     def __init__(
         self,
@@ -144,7 +159,7 @@ class VocosBackbone(nn.Module):
         x = self.final_layer_norm(x.transpose(1, 2))
         return x
 
-class VocosResNetBackbone(nn.Module):
+class VocosResNetBackbone(Backbone):
 
     def __init__(self, input_channels, dim, num_blocks, layer_scale_init_value=None):
         super().__init__()
