@@ -99,7 +99,7 @@ class VocosBackbone(nn.Module):
         self.adanorm = adanorm_num_embeddings is not None
 
         if self.adanorm:
-            from vocos.modules import AdaLayerNorm
+            from modules import AdaLayerNorm
             self.norm = AdaLayerNorm(adanorm_num_embeddings, dim, eps=1e-6)
         else:
             self.norm = nn.LayerNorm(dim, eps=1e-6)
