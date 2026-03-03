@@ -3,6 +3,31 @@ from torch import nn
 from torch.nn.utils import weight_norm
 from typing import Optional
 
+class AdaLayerNorm(nn.Module):
+    """
+    Adaptive Layer Normalization module with learnable embeddings per `num_embeddings` classes
+
+    Args:
+        num_embeddings (int): Number of embeddings.
+        embedding_dim (int): Dimension of the embeddings.
+    """
+
+    def __init__(self, num_embeddings: int, embedding_dim: int, eps: float = 1e-6):
+        super().__init__()
+        self.eps = eps
+        self.dim = embedding_dim
+        self.scale = nn.Embedding(num_embeddings=num_embeddings, embedding_dim=embedding_dim)
+        self.shift = nn.Embedding(num_embeddings=num_embeddings, embedding_dim=embedding_dim)
+        torch.nn.init.ones_(self.scale.weight)
+        torch.nn.init.zeros_(self.shift.weight)
+
+    def forward(self, x: torch.Tensor, cond_embedding_id: torch.Tensor) -> torch.Tensor:
+        scale = self.scale(cond_embedding_id)
+        shift = self.shift(cond_embedding_id)
+        x = nn.functional.layer_norm(x, (self.dim,), eps=self.eps)
+        x = x * scale + shift
+        return x
+
 class CausalConv1d(nn.Conv1d):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -114,7 +139,6 @@ class VocosBackbone(Backbone):
         self.adanorm = adanorm_num_embeddings is not None
 
         if self.adanorm:
-            from modules import AdaLayerNorm
             self.norm = AdaLayerNorm(adanorm_num_embeddings, dim, eps=1e-6)
         else:
             self.norm = nn.LayerNorm(dim, eps=1e-6)
